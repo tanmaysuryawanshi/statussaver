@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "726617558553",
+    "project_id": "statussaver-f6952",
+    "storage_bucket": "statussaver-f6952.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:726617558553:android:093e8791e0a2b1016b2488",
+        "android_client_info": {
+          "package_name": "com.tanmaysuryawanshi.statussaver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "726617558553-tl31rnnuotg3v3o5rhb84smflgh2dpov.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYi8jDxdLQKk5zbrloqnBl6q4Uhw7d708"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "726617558553-tl31rnnuotg3v3o5rhb84smflgh2dpov.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

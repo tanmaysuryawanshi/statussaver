@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+<TextView
+    android:id="@+id/allstatusTV"
+    android:elevation="23dp"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:fontFamily="@font/open_sans"
+    android:textSize="24sp"
+    android:padding="5dp"
+    android:layout_marginStart="10dp"
+    android:text="All Status"
+    android:textColor="@color/black"
+    />
+<com.google.android.material.tabs.TabLayout
+    android:id="@+id/tablayout"
+     android:elevation="20dp"
+     android:layout_below="@+id/allstatusTV"
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:weightSum="2"
+     android:orientation="horizontal"
+     >
+     <com.google.android.material.tabs.TabItem
+         android:id="@+id/photosFragment"
+         android:text="Photos"
+         android:layout_height="wrap_content"
+         android:layout_weight="1"
+          android:layout_width="wrap_content"/>
+     <com.google.android.material.tabs.TabItem
+         android:id="@+id/videosFragment"
+         android:text="Video"
+         android:layout_height="wrap_content"
+         android:layout_weight="1"
+          android:layout_width="wrap_content"/>
+</com.google.android.material.tabs.TabLayout>
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/tablayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+    <androidx.recyclerview.widget.RecyclerView
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:listitem="@layout/status_item"
+        android:layout_below="@+id/tablayout"
+        android:id="@+id/rvStatus"
+        android:padding="10dp"/>
+
+
+
+</RelativeLayout>
