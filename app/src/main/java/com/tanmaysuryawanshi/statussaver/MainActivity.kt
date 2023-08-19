@@ -22,6 +22,9 @@ import androidx.annotation.RequiresApi
 import androidx.cardview.widget.CardView
 import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LifecycleCoroutineScope
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -34,6 +37,9 @@ import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import com.tanmaysuryawanshi.statussaver.fragments.PhotoFragment
 import com.tanmaysuryawanshi.statussaver.fragments.VideoFragment
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -59,6 +65,8 @@ private lateinit var rvStatusList:RecyclerView
         rvStatusList=findViewById(R.id.rvStatus)
         statusList= ArrayList()
 
+
+
         val result=readDataFromPrefs();
         if (result){
             val sh=getSharedPreferences("DATA_PATH", MODE_PRIVATE)
@@ -70,16 +78,8 @@ private lateinit var rvStatusList:RecyclerView
 
                 val fileDoc=DocumentFile.fromTreeUri(applicationContext, Uri.parse(uriPath))
 
-                for (file:DocumentFile in fileDoc!!.listFiles()){
-                    //   Toast.makeText(this, file.name,Toast.LENGTH_LONG).show()
-                    if (!file.name!!.endsWith(".nomedia")) {
-                       // if(!file.name!!.endsWith(".jpg") || !file.name!!.endsWith(".png") || !file.name!!.endsWith(".jpeg"))
-
-                        val modelClass=ModelClass(file.name!!,file.uri.toString())
-
-                        statusList.add(modelClass)}
-
-
+                lifecycleScope.launch (Dispatchers.IO){
+                    getFileData(fileDoc)
                 }
                 //   Toast.makeText(this,statusList.toString(),Toast.LENGTH_SHORT).show()
 
@@ -155,18 +155,31 @@ val sharedPreferences=getSharedPreferences("DATA_PATH", MODE_PRIVATE)
             if (treeUri!=null){
                 contentResolver.takePersistableUriPermission(treeUri,Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 val fileDoc=DocumentFile.fromTreeUri(applicationContext, treeUri)
-                for (file:DocumentFile in fileDoc!!.listFiles()){
-                    if (!file.name!!.endsWith(".nomedia")) {
-                        val modelClass=ModelClass(file.name!!,file.uri.toString())
-
-                        statusList.add(modelClass)}
-
-
+                lifecycleScope.launch (Dispatchers.IO){
+                    getFileData(fileDoc)
                 }
+
+
+
                 setupRecyclerView(statusList)
             }
 
 
+
+
+        }
+    }
+
+    private suspend fun getFileData(fileDoc: DocumentFile?) {
+        for (file: DocumentFile in fileDoc!!.listFiles()) {
+            //   Toast.makeText(this, file.name,Toast.LENGTH_LONG).show()
+            if (!file.name!!.endsWith(".nomedia")) {
+                // if(!file.name!!.endsWith(".jpg") || !file.name!!.endsWith(".png") || !file.name!!.endsWith(".jpeg"))
+
+                val modelClass = ModelClass(file.name!!, file.uri.toString())
+
+                statusList.add(modelClass)
+            }
 
 
         }
@@ -207,6 +220,7 @@ val dialog=Dialog(this@MainActivity)
 
         val btDownload=dialog.findViewById<Button>(R.id.bt_download)
         btDownload.setOnClickListener{
+
             dialog.dismiss()
             saveFile(selectedStatusItem)
         }
